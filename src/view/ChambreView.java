@@ -2,6 +2,7 @@ package view;
 
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
@@ -31,7 +32,7 @@ public class ChambreView extends JFrame {
     JButton ajouter = new JButton("Ajouter");
     JButton modifier = new JButton("Modifier");
     JButton supprimer = new JButton("Supprimer");
-    JButton rechercher = new JButton("Rehercher");
+    JButton rechercher = new JButton("Rechercher");
 
     
 
@@ -88,6 +89,34 @@ public class ChambreView extends JFrame {
         ChambreCont koko=new ChambreCont( n_etage, typeCh, prix, rech);
         ajouter.addActionListener(koko);
         rechercher.addActionListener(koko);
+        
+        
+        supprimer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               // check for selected row first
+               if(affichageRoom.getSelectedRow() != -1) {
+                  // remove selected row from the model
+            	   Admin.a.removRoom(Integer.parseInt(affichageRoom.getValueAt(affichageRoom.getSelectedRow(), 0).toString()), modelRoom, affichageRoom.getSelectedRow());
+                  
+               }
+            }
+         });
+        
+       modifier.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               // check for selected row first
+               if(affichageRoom.getSelectedRow() != -1) {
+            	   System.out.println(affichageRoom.getSelectedColumn());
+            	   System.out.println(affichageRoom.getSelectedRow());
+                 
+            	   Admin.a.changeRoom(Integer.parseInt(affichageRoom.getValueAt(affichageRoom.getSelectedRow(), 0).toString()), modelRoom, affichageRoom.getSelectedRow(), affichageRoom.getSelectedColumn(),affichageRoom.getValueAt(affichageRoom.getSelectedRow(), affichageRoom.getSelectedColumn()).toString());
+                  
+            	   
+               }
+            }
+         });
         
 
 

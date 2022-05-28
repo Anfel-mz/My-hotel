@@ -9,6 +9,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import view.ChambreView;
+import view.ClientView;
+
 public class Admin {
 	
  public static Admin a = new Admin();
@@ -64,42 +67,57 @@ public class Admin {
 	    	
 	    }
 	    
-	    //afficher une chambre à partir de son num 
-	    public void showRoom(int n) {
+	    //afficher une chambre à partir de son num ou etage
+	    public void showRoom(int n, DefaultTableModel model) {
 	    	for(Chambre c : rooms) {
 	    		if(n == c.getId()) {
-	    			System.out.println(c);	
+	    			model.addRow(new Object[]{c.getId(), c.getEtage(),c.getType(), c.getPrix()});
 	    			break;//pas la peine de continuer la boucle pour le reste des elements
 	    		}
 	   }
 	  }
 	    
 	    //afficher les chambres dans un étage
-	    public void showRoom(int n, int e) { //pour le premier int on met juste un 0, it will be ignored anyways
-	    	for(Chambre c : rooms) {
-	    		if(e == c.getEtage()) {
-	    			System.out.println(c);	
-	    		}
-	    }
-	  }
+	    public void showRoom(String e,DefaultTableModel model) { //pour le premier int on met juste un 0, it will be ignored anyways
+	    	int etage ;
+	    	
+	    		 try {
+	     		 etage = Integer.parseInt(e);
+	     		for(Chambre c : rooms) {
+		    		if(etage == c.getEtage()) {
+		    			model.addRow(new Object[]{c.getId(), c.getEtage(),c.getType(), c.getPrix()});
+		    			
+		    		}
+		    }
+	   
+	     		   }
+	     		   catch(NumberFormatException e1){
+	     		   }
+	     		   
+	    	
+	    	
+	    	}
+	  
 	    //afficher les chambres d'un type 
-	    public void showRoom(char t) {
+	    public void showRoom(char t, DefaultTableModel model) {
 	    	for(Chambre c : rooms) {
 	    		if(t == c.getType()) {
-	    			System.out.println(c);	
+	    			model.addRow(new Object[]{c.getId(), c.getEtage(),c.getType(), c.getPrix()});
 	    		}
 	    }
 	    }
 	  
 	    //////////////////////////////////////////supprimer une chambre ///////////////////////////////////////////////////////
-	    public void removeRoom(int i) {
+	    public void removRoom(int i,DefaultTableModel model, int selecRow) {
 	    	for(Chambre c : rooms) {
 	    		if(i == c.getId()) {
 	    			rooms.remove(c);
+	    			model.removeRow(selecRow);
 	    			break;//pas la peine de continuer la boucle pour le reste des elements
 	    		}
 	    	}
 	    }
+	    
 	    
 	    /////////////////////////////////récupérerune chambre à partir de son num///////////////////////////////////////
 	    //fonction d'aide
@@ -110,6 +128,35 @@ public class Admin {
 	    	}
 	    	System.out.println("error getting room");
 	    	return ch;
+	    }
+	    
+	    
+	    public void changeRoom(int id, DefaultTableModel model, int selecRow, int selecColum, String t) { //valide
+	    	for(Chambre r : rooms) {
+	    		if(r.getId() == id) {
+	    			
+	    			
+	    			if(selecColum == 1) {
+	    				r.setEtage(Integer.parseInt(t));
+	    				
+	    				System.out.println(r);
+	    				model.setValueAt(t, selecRow, selecColum);
+	    				
+	    			}else if(selecColum == 2){
+	    				r.setType(t.toUpperCase().charAt(0));;
+	    			
+	    				System.out.println(r);
+	    				model.setValueAt(t, selecRow, selecColum);
+	    			}else if(selecColum == 3) {
+	    				r.setPrix(Integer.parseInt(t));;
+	    				
+	    				System.out.println(r);
+	    				model.setValueAt(t, selecRow, selecColum);
+	    			}
+	    			
+	    			break;//sortir de la boucle pas la peine de continuer le reste 
+	    		}
+	    	}
 	    }
 	   
 	    ////////////////////////////////////////////////////////////////

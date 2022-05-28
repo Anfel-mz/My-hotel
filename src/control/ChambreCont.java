@@ -57,12 +57,38 @@ JTextField rech;
         
         //rechercher button
         
-        if(((JButton)e.getSource()).getText().equals("Rechercher")) {
-        	if(recherche.isEmpty()) {
-     		   ClientView.model.setRowCount(0);
+        if(((JButton)e.getSource()).getText().equals("Rechercher")){
+            
+     	   if(recherche.isEmpty()) {
+     		   ChambreView.modelRoom.setRowCount(0);
      		  Admin.a.showRoom(ChambreView.modelRoom);
      		   
-     	   }
-        }  
+     	   } else {
+      		  
+     		   try {
+     			   int num = Integer.parseInt(recherche);
+     			   ClientView.model.setRowCount(0);
+     			   Admin.a.showRoom(num, ChambreView.modelRoom);
+     			  
+     		   }
+     		   catch(NumberFormatException e1){
+     			   String[] splited = recherche.split("\\s");
+     			   ClientView.model.setRowCount(0);
+     			   
+     			   for(int i = 0; i< splited.length; i ++) {
+     				   if(splited[i].equals("etage")) {
+     					   i++;
+     					  Admin.a.showRoom(splited[i], ClientView.model);
+     					  
+     				   } else {
+     					  Admin.a.showRoom(splited[i].toUpperCase().charAt(0), ClientView.model);
+     				   }
+     				  
+     			   }
+     			   
+     		   }
+     		   
+      	   }
+       } 
        }  
 }
